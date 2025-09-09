@@ -53,7 +53,11 @@ namespace TempleOsrsAPIWrapper.http
             string uri = QueryHelpers.AddQueryString("group_member_info.php", query.GroupRequestQueryDict());
             return await _httpRequestHandler.GetRequest<RootResponse<GroupMemberStatsResponse>>(uri);
         }
-
+        /// <summary>
+        /// Retrieves group information, including achievements.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <returns>A <see cref="RootResponse{T}"/> containing a <see cref="GroupInformationAchievementResponse"/>.</returns>
         public async Task<RootResponse<GroupInformationAchievementResponse>?> GetGroupAchievementInformation(int groupId)
         {
             var query = new GroupRequest
@@ -64,6 +68,11 @@ namespace TempleOsrsAPIWrapper.http
             string uri = QueryHelpers.AddQueryString("group_info.php", query.GroupRequestQueryDict());
             return await _httpRequestHandler.GetRequest<RootResponse<GroupInformationAchievementResponse>>(uri);
         }
+        /// <summary>
+        /// Retrieves recent milestones for each group member.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <returns>A <see cref="RootResponse{T}"/> containing a list of <see cref="UserMilestone[]"/>.</returns>
         public async Task<RootResponse<UserMilestone[]>?> GetGroupRecentMilestones(int groupId)
         {
             var query = new GroupRequest
@@ -73,6 +82,11 @@ namespace TempleOsrsAPIWrapper.http
             string uri = QueryHelpers.AddQueryString("group_achievements.php", query.GroupRequestQueryDict());
             return await _httpRequestHandler.GetRequest<RootResponse<UserMilestone[]>>(uri);
         }
+        /// <summary>
+        /// Retrieves all competitions linked to the group.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <returns>A <see cref="RootResponse{T}"/> containing a list of <see cref="GroupCompetitions[]"/>.</returns>
         public async Task<RootResponse<GroupCompetitions[]>?> GetGroupCompetitions(int groupId)
         {
             var query = new GroupRequest
@@ -82,6 +96,13 @@ namespace TempleOsrsAPIWrapper.http
             string uri = QueryHelpers.AddQueryString("group_competitions.php", query.GroupRequestQueryDict());
             return await _httpRequestHandler.GetRequest<RootResponse<GroupCompetitions[]>>(uri);
         }
+        /// <summary>
+        /// Removes members from a group. Requires the group key.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <param name="playersList">A list of players to remove.</param>
+        /// <param name="groupKey">The private group key.</param>
+        /// <returns>A <see cref="RootResponse{T}"/> containing a <see cref="GroupMembersRemovedResponse"/>.</returns>
         public async Task<RootResponse<GroupMembersRemovedResponse>?> RemoveGroupMembers(int groupId, string[] playersList, string groupKey)
         {
             string players = string.Join(", ", playersList);
@@ -94,6 +115,13 @@ namespace TempleOsrsAPIWrapper.http
             string uri = "remove_group_member.php";
             return await _httpRequestHandler.PostRequestModel<EditGroupMembersRequest, RootResponse<GroupMembersRemovedResponse>>(uri, content);
         }
+        /// <summary>
+        /// Adds members to a group. Requires the group key.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <param name="playersList">A list of players to remove.</param>
+        /// <param name="groupKey">The private group key.</param>
+        /// <returns>A <see cref="RootResponse{T}"/> containing a <see cref="GroupMembersAddedResponse"/>.</returns>
         public async Task<RootResponse<GroupMembersAddedResponse>?> AddGroupMembers(int groupId, string[] playersList, string groupKey)
         {
             string players = string.Join(", ", playersList);
