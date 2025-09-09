@@ -8,7 +8,7 @@
         /// <summary>
         /// Player's RSN.
         /// </summary>
-        public string? username { get; set; }
+        public string? Username { get; set; }
         /// <summary>
         /// Date of the milestone in YYYY-MM-DD format.
         /// </summary>

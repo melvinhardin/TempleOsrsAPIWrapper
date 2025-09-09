@@ -12,16 +12,44 @@ namespace TempleOsrsAPIWrapper.Utils
         {
             _httpclient = httpClient;
         }
-
+        static async void LogPostRequest(HttpResponseMessage response)
+        {
+            string logString = $"Status Code: {(int)response.StatusCode} - {response.StatusCode}\nHeaders:\n";
+            foreach (var header in response.Headers)
+            {
+                logString += $"{header.Key}: {string.Join(", ", header.Value)} \n";
+            }
+            logString += "Content:\n";
+            logString += string.IsNullOrWhiteSpace(response.Content.ToString()) ? "[EMPTY]" : await response.Content.ReadAsStringAsync();
+            string currentTime = DateTime.Now.ToString("yyyy-MM-ddHHmmss");
+            string filePath = $"post_requests_log{currentTime}.txt";
+            byte[] encodedText = Encoding.Unicode.GetBytes(logString);
+            using (FileStream sourceStream = new FileStream(filePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true))
+            {
+                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+            }
+        }
         public async Task<TResponse?> GetRequest<TResponse>(string endpoint) where TResponse : class
         {
             HttpResponseMessage response = await _httpclient.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error deserializing response: {ex.Message}");
+                    return null;
+                }
+
             }
             else
             {
+                Console.WriteLine($"Request failed with status code: {(int)response.StatusCode} - {response.StatusCode}");
                 return null;
             }
         }
@@ -30,10 +58,20 @@ namespace TempleOsrsAPIWrapper.Utils
             HttpResponseMessage response = await _httpclient.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error deserializing response: {ex.Message}");
+                    return null;
+                }
+
             }
             else
             {
+                Console.WriteLine($"Request failed with status code: {(int)response.StatusCode} - {response.StatusCode}");
                 return null;
             }
         }
@@ -46,25 +84,23 @@ namespace TempleOsrsAPIWrapper.Utils
             string json = JsonSerializer.Serialize(content, options);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpclient.PostAsync(endpoint, httpContent);
-            Console.WriteLine($"Status Code: {(int)response.StatusCode} - {response.StatusCode}");
-            Console.WriteLine("Headers:");
-            foreach (var header in response.Headers)
-            {
-                Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
-            }
-            Console.WriteLine("Content:");
-            Console.WriteLine(string.IsNullOrWhiteSpace(response.Content.ToString()) ? "[EMPTY]" : await response.Content.ReadAsStringAsync());
+            LogPostRequest(response);
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Success");
-                Console.WriteLine(response.StatusCode.ToString(), " ", response.ToString(), response.Headers.ToString());
-                return await response.Content.ReadAsStringAsync();
+                try
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading response content: {ex.Message}");
+                    return null;
+                }
             }
             else
             {
-                Console.WriteLine("Failure");
+                Console.WriteLine($"Request failed with status code: {(int)response.StatusCode} - {response.StatusCode}");
                 return response.ToString();
-
             }
         }
         public async Task<TResponse?> PostRequestModel<TContent, TResponse>(string endpoint, TContent content) where TContent : class where TResponse : class
@@ -76,16 +112,23 @@ namespace TempleOsrsAPIWrapper.Utils
             string json = JsonSerializer.Serialize(content, options);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpclient.PostAsync(endpoint, httpContent);
+            LogPostRequest(response);
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Success");
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error deserializing response: {ex.Message}");
+                    return null;
+                }
             }
             else
             {
-                Console.WriteLine("Failure");
+                Console.WriteLine($"Request failed with status code: {(int)response.StatusCode} - {response.StatusCode}");
                 return null;
-
             }
         }
     }

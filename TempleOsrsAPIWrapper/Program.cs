@@ -22,6 +22,5 @@ var apiUserClient = provider.GetRequiredService<TempleOsrsUserApiClientService>(
 var apiCompetitionClient = provider.GetRequiredService<TempleOsrsCompetitionApiClientService>();
 var apiGroupClient = provider.GetRequiredService<TempleOsrsGroupApiClientService>();
 
-
 Console.WriteLine("Ending Tests");
 
