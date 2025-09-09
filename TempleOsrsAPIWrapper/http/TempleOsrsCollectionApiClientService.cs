@@ -5,6 +5,9 @@ using TempleOsrsAPIWrapper.Utils;
 
 namespace TempleOsrsAPIWrapper.http
 {
+    /// <summary>
+    /// Contains all methods related to the <a href="https://templeosrs.com/api_doc.php#Clog_Endpoints">TempleOsrs collection log endpoints. </a> Uses the <see cref="HttpClient"/> setup in the HttpRequestHandler.
+    /// </summary>
     public class TempleOsrsCollectionApiClientService
     {
         private readonly HttpRequestHandler _httpRequestHandler;
@@ -13,7 +16,11 @@ namespace TempleOsrsAPIWrapper.http
         {
             _httpRequestHandler = httpRequestHandler;
         }
-
+        /// <summary>
+        /// Gets all collection logs for a specific group.
+        /// </summary>
+        /// <param name="groupId">The id of the group.</param>
+        /// <returns>Returns A <see cref="RootResponse{T}"/> containing a <see cref="CollectionLogGroupResponse"/>.</returns>
         public async Task<RootResponse<CollectionLogGroupResponse>?> GetGroupCollections(int groupId)
         {
             var query = new CollectionLogRequests

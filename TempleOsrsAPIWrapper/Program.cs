@@ -1,5 +1,4 @@
-﻿using http.TempleOsrsApiClient;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using TempleOsrsAPIWrapper.http;
 using TempleOsrsAPIWrapper.Models.Competitions.CreateCompetition;

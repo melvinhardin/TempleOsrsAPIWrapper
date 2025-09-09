@@ -2,13 +2,12 @@
 using TempleOsrsAPIWrapper.Models.Common;
 using TempleOsrsAPIWrapper.Models.Player;
 using TempleOsrsAPIWrapper.Models.Player.PlayerDatapointsResponse;
-using TempleOsrsAPIWrapper.Models.Player.PlayerGainsResponse;
 using TempleOsrsAPIWrapper.Models.Player.PlayerInformationResponse;
 using TempleOsrsAPIWrapper.Models.Player.PlayerNamesResponse;
 using TempleOsrsAPIWrapper.Models.Player.PlayerStatsResponse;
 using TempleOsrsAPIWrapper.Utils;
 
-namespace http.TempleOsrsApiClient
+namespace TempleOsrsAPIWrapper.http
 {
     /// <summary>
     /// Contains all methods related to the <a href="https://templeosrs.com/api_doc.php#Player_Endpoints">TempleOsrs player endpoints. </a> Uses the <see cref="HttpClient"/> setup in the HttpRequestHandler.

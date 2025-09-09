@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TempleOsrsAPIWrapper.Models.Player.PlayerGainsResponse
+namespace TempleOsrsAPIWrapper.Models.Player
 {
     public class PlayerGainsResponse
     {

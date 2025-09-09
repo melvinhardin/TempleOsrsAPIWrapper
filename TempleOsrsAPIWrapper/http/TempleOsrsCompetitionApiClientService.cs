@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using TempleOsrsAPIWrapper.Models.Common;
 using TempleOsrsAPIWrapper.Models.Competitions;
-using TempleOsrsAPIWrapper.Models.Competitions.AddCompetitionList;
+using TempleOsrsAPIWrapper.Models.Competitions.AddCompetitionPlayer;
 using TempleOsrsAPIWrapper.Models.Competitions.CompetitionInformationV2Response;
 using TempleOsrsAPIWrapper.Models.Competitions.CreateCompetition;
 using TempleOsrsAPIWrapper.Models.Competitions.DeleteCompetition;
-using TempleOsrsAPIWrapper.Models.Competitions.RemoveCompetitionList;
+using TempleOsrsAPIWrapper.Models.Competitions.RemoveCompetitionPlayer;
 using TempleOsrsAPIWrapper.Utils;
 
 namespace TempleOsrsAPIWrapper.http
@@ -41,7 +41,7 @@ namespace TempleOsrsAPIWrapper.http
         /// <param name="competitionId">The competition id.</param>
         /// <param name="skill">A string for the skill to get details for. Either lowercase skill/boss name, or number . Details can be found on <a href="https://templeosrs.com/js/skill_data.js"> https://templeosrs.com/js/skill_data.js</a></param>
         /// <param name="details"></param>
-        /// <returns>Returns A <see cref="RootResponse{T}"/> containing a <see cref="CreateCompetitionResponse"/>.</returns>
+        /// <returns>Returns A <see cref="RootResponse{T}"/> containing a <see cref="CompetitionInformationResponse"/>.</returns>
         public async Task<RootResponse<CompetitionInformationResponse>?> GetCompetitionInfo(int competitionId, string? skill = null, bool details = false)
         {
             var query = new CompetitionRequest
@@ -58,20 +58,20 @@ namespace TempleOsrsAPIWrapper.http
         /// </summary>
         /// <param name="newCompetition"> Takes the name, skill, starting date (unix), ending date(unix), and a string list of participants in the form of an object <see cref="CreateCompetitionStandardRequest"></see></param>
         /// <returns>Returns A <see cref="CreateCompetitionResponse"/> model</returns>
-        public async Task<string?> CreateCompetition(CreateCompetitionStandardRequest newCompetition)
+        public async Task<RootResponse<CreateCompetitionResponse>?> CreateCompetition(CreateCompetitionStandardRequest newCompetition)
         {
             string uri = "competition_create.php";
-            return await _httpRequestHandler.PostRequest(uri, newCompetition);
+            return await _httpRequestHandler.PostRequestModel<CreateCompetitionStandardRequest, RootResponse<CreateCompetitionResponse>>(uri, newCompetition);
         }
         /// <summary>
         /// Creates a new team competition.
         /// </summary>
         /// <param name="newTeamCompetition">Takes the name, skill, starting date (unix), ending date(unix), and a dictionary with teamname as key and a list of participants in the form of an object <see cref="CreateCompetitionTeamRequest"></see></param>
         /// <returns>Returns A <see cref="CreateCompetitionResponse"/> model</returns>
-        public async Task<string?> CreateCompetition(CreateCompetitionTeamRequest newTeamCompetition)
+        public async Task<RootResponse<CreateCompetitionResponse>?> CreateCompetition(CreateCompetitionTeamRequest newTeamCompetition)
         {
             string uri = "competition_create.php";
-            return await _httpRequestHandler.PostRequest(uri, newTeamCompetition);
+            return await _httpRequestHandler.PostRequestModel<CreateCompetitionTeamRequest, RootResponse<CreateCompetitionResponse>>(uri, newTeamCompetition);
         }
         /// <summary>
         /// Removes a competition
