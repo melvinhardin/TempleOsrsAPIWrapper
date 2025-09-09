@@ -21,7 +21,7 @@ namespace TempleOsrsAPIWrapper.Utils
             }
             logString += "Content:\n";
             logString += string.IsNullOrWhiteSpace(response.Content.ToString()) ? "[EMPTY]" : await response.Content.ReadAsStringAsync();
-            string currentTime = DateTime.Now.ToString("yyyy-MM-ddHHmmss");
+            string currentTime = DateTime.Now.ToString("yyyy-MM-ddHHmmssff");
             string filePath = $"post_requests_log{currentTime}.txt";
             byte[] encodedText = Encoding.Unicode.GetBytes(logString);
             using (FileStream sourceStream = new FileStream(filePath,
