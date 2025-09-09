@@ -2,6 +2,9 @@
 
 namespace TempleOsrsAPIWrapper.Models.Groups.GroupMemberStatsResponse
 {
+    /// <summary>
+    /// Kills for all bosses, total EHB for a group member.
+    /// </summary>
     public class GroupMemberBosses
     {
         [JsonPropertyName("Clue_all")]
