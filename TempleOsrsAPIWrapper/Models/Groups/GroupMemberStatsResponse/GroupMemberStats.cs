@@ -19,7 +19,7 @@ namespace TempleOsrsAPIWrapper.Models.Groups.GroupMemberStatsResponse
         [JsonPropertyName("leagues_iv_points")]
         public int? LeaguesIvPoints { get; set; }
         [JsonPropertyName("leagues_v_points")]
-        public int? leaguesVPoints { get; set; }
+        public int? LeaguesVPoints { get; set; }
         [JsonPropertyName("on_hiscores")]
         public byte? OnHiscores { get; set; }
         [JsonPropertyName("last_checked")]
